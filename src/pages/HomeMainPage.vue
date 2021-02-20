@@ -20,11 +20,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  .home{
-    height: 300px;
-    text-align: center;
-    color: white;
-    font-size: 3rem;
-    font-weight: bold;
-  }
+
 </style>

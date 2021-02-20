@@ -14,6 +14,7 @@ const routes = [
 
 // 라우팅 정보를 가져오는 라우터 생성
 const router = createRouter({
+  //Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHistory(),
   //routes : routes 이름이 똑같으면 아래처럼 축약 가능
   routes
