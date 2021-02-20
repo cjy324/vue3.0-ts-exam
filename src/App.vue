@@ -1,10 +1,42 @@
+
+<!-- vue를 하나의 jsp라고 생각하면 됨 -->
+
 <template>
-  
-  <div class="container mx-auto bg-green-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores beatae dignissimos quidem omnis dolorum totam quae ipsa architecto quibusdam ut, id voluptas. Iure autem totam enim numquam asperiores quos velit!
-  Doloremque blanditiis voluptates, eligendi incidunt mollitia ducimus aspernatur facilis officiis, provident adipisci cumque quae dignissimos soluta. Cupiditate cumque ipsa commodi, porro sint quibusdam dolore assumenda reprehenderit quod suscipit inventore labore.
-  Eum soluta assumenda debitis voluptatibus veniam quo, impedit quas pariatur vero repudiandae quaerat. Veniam obcaecati, ipsam voluptatum odio illo maxime, quisquam aut tempore harum impedit, soluta voluptatem tempora? Soluta, repellendus!
-  Minus voluptatibus commodi iusto neque saepe ab doloribus. Officia voluptatum quibusdam facilis perferendis maxime incidunt fuga, voluptatem nesciunt aspernatur est iste perspiciatis tenetur iusto, sequi exercitationem blanditiis minus corporis. Omnis.
-  </div>
+
+
+  <header class="header-bar h-40 bg-gray-100">
+    <div class="container mx-auto flex h-full">
+      <!-- router-link는 a와 같다고 보면 됨 -->
+      <!-- to는 href -->
+      <router-link to="/" class="h-full flex items-center">
+        <img class="block w-20" src="./assets/logo.png" alt="">
+      </router-link>
+
+      <div class="flex-grow"></div>
+
+      <nav class="header-bar__menu-box-1">
+        <ul class="flex h-full">
+          <li>
+            <router-link to="/" class="h-full flex items-center font-bold px-10 hover:bg-black hover:text-white">
+              HOME
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/article/list" class="h-full flex items-center font-bold px-10 hover:bg-black hover:text-white">
+              ARTICLE LIST
+            </router-link>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    
+   <main>
+    <!-- 이것을 해주어야 다른 페이지를 불러올 수 있음 -->
+    <router-view></router-view>
+  </main>
+
 </template>
 
 <script lang="ts">
@@ -17,13 +49,10 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
