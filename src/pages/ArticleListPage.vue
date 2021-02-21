@@ -2,6 +2,8 @@
   
   <TitleBar title="Article List" class="bg-purple-500"/>
 
+  <TitleBar class="bg-purple-500">Article List</TitleBar>
+
 </template>
 
 <script lang="ts">

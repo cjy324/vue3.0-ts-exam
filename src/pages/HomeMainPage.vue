@@ -1,7 +1,8 @@
 <template>
-  <!-- TitleBar 컴포넌트를 불러오고 title을 입력한다 -->
-  <!-- class를 추가하여 자신만의 css를 추가할 수도 있다. -->
-  <TitleBar title="Home Main" class="bg-green-500"/>
+
+<!-- 컴포넌트 slot으로 개편 -->
+<TitleBar class="bg-green-500">Home Main</TitleBar>
+
 </template>
 
 <script lang="ts">
