@@ -2,6 +2,7 @@
 
   <TitleBar class="bg-purple-500">Article List</TitleBar>
 
+  <input type="checkbox">
   <input type="radio">
 </template>
 
