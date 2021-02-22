@@ -1,6 +1,6 @@
 <template>
   <div class="form-row flex">
-    <div class="w-32 flex justify-center">
+    <div class="w-32 flex justify-center ">
       <span class="flex items-center">{{title}}</span>
     </div>
     <div class="flex-grow justify-center">
@@ -33,6 +33,7 @@ export default defineComponent({  // 컴포넌트의 속성을 정의해주어�
     즉, class에 css를 입력하는 tailwind를 style에 바로 입력하는 것  */
   /* rounded-sm =>	border-radius:0.125rem; */
   @apply w-full rounded-xl;
+
 }
 
 /* textarea에 달린 form-row-input 클래스 라는 의미*/
@@ -40,11 +41,16 @@ textarea.form-row-input{
   min-height: theme('spacing.96');
 }
 
-/*form-row 다음에 나오는 form-row라는 의미*/
-.form-row + .form-row {
+.form-row{
   /* mt => margin-top */
   @apply mt-2;
 }
+
+/*form-row 다음에 나오는 form-row라는 의미*/
+.form-row + .form-row {
+
+}
+
 </style>
 
 
