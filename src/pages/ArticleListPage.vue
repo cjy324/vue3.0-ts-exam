@@ -12,8 +12,16 @@
           <textarea class="form-row-input" placeholder="내용을 입력하세요."></textarea>
         </FormRow>
         <FormRow>
-          <!-- index.css로 부터 .btn-primary의 css를 가져오기 -->
-          <input class="btn-primary" type="button" value="등록">
+          <!-- App.vue로 부터 .btn-primary의 style 가져오기 -->
+          <div class="btns">
+            <input class="btn-primary" type="button" value="등록">
+            <input class="btn-success" type="button" value="등록">
+            <input class="btn-info" type="button" value="등록">
+            <input class="btn-warning" type="button" value="등록">
+            <input class="btn-secondary" type="button" value="등록">
+            <input class="btn-danger" type="button" value="등록">
+          </div>
+          
         </FormRow>
       </form>
     </div>
