@@ -2,8 +2,21 @@
 
   <TitleBar class="bg-purple-500">Article List</TitleBar>
 
-  <input type="checkbox">
-  <input type="radio">
+  <section class="article-write-form-box">
+    <div class="container mx-auto">
+      <form action="">
+        <FormRow title="제목">
+          <input type="text" class="form-row-input" placeholder="제목을 입력하세요."> 
+        </FormRow>
+        <FormRow title="내용">
+          <textarea class="form-row-input" placeholder="내용을 입력하세요."></textarea>
+        </FormRow>
+        <FormRow>
+          <input type="button" value="등록">
+        </FormRow>
+      </form>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">

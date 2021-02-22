@@ -9,6 +9,7 @@ import './index.css'
 
 // 전역 컴포넌트 불러오기
 import TitleBar from './components/TitleBar.vue';
+import FormRow from './components/FormRow.vue';
 
 // 각 페이지 불러오기
 import HomeMainPage from './pages/HomeMainPage.vue'
@@ -40,6 +41,7 @@ app.use(router)
 //앱에 전역 컴포넌트 적용
 //모든 곳에서 컴포넌트를 불러올수 있게 해줌
 app.component('TitleBar',TitleBar)
+app.component('FormRow',FormRow)
 
 //앱 표시
 app.mount('#app');
