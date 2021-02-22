@@ -12,7 +12,8 @@
           <textarea class="form-row-input" placeholder="내용을 입력하세요."></textarea>
         </FormRow>
         <FormRow>
-          <input type="button" value="등록">
+          <!-- index.css로 부터 .btn-primary의 css를 가져오기 -->
+          <input class="btn-primary" type="button" value="등록">
         </FormRow>
       </form>
     </div>
