@@ -62,7 +62,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from 'vue'
- /* 전역 컴포넌트 적용으로 안해도 됨 
+import { useRoute } from 'vue-router'
+/* 전역 컴포넌트 적용으로 안해도 됨 
 import TitleBar from '../components/TitleBar.vue';
 */
 //import { Article } from '../dtos/' /* '../dtos/index'이지만 생략가능 */
@@ -77,6 +78,7 @@ export default defineComponent({
   최초 한 번 실행된 이후에는 재호출되지 않아야 한다.
   참고: setup() 함수 안에 선언된 변수는, draw() 함수를 비롯한 여타 함수들이 접근할 수 없다. */
   setup(){
+    const route = useRoute();  //useRoute 객체 생성
     const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
 
     /* ref: HTMLInputElement의 위치를 가져오는 것 */
@@ -111,7 +113,11 @@ export default defineComponent({
 
     // 바로 실행하는 것이 아닌 모든 것이 준비되었을때 실행됨
     onMounted(() => {
-      loadArticles(1);
+      // route.query.boardId as any ?? "1" 
+      // route.query.boardId가 null이거나 undifind이면 1을 적용하라는 의미
+      const boardId = parseInt(route.query.boardId as string ?? "1");
+      
+      loadArticles(boardId);
 
     });
 
