@@ -109,6 +109,7 @@ export default defineComponent({
       });
     }
 
+    // 바로 실행하는 것이 아닌 모든 것이 준비되었을때 실행됨
     onMounted(() => {
       loadArticles(1);
 
