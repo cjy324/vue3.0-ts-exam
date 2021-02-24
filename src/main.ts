@@ -15,6 +15,12 @@ import FormRow from './components/FormRow.vue';
 import HomeMainPage from './pages/HomeMainPage.vue'
 import ArticleListPage from './pages/ArticleListPage.vue'
 
+// MainApi 불러오기
+import { MainApi } from './apis/'
+
+// MainApi 객체 생성
+const mainApi = new MainApi();
+
 // 라우팅 정보 설정(구성)
 const routes = [
   { path: '/', component: HomeMainPage },
@@ -37,6 +43,9 @@ const app = createApp(App);
 
 //앱에 라우터 적용
 app.use(router)
+
+//앱에 전역 라이브러리 등록
+app.config.globalProperties.$mainApi = mainApi;
 
 //앱에 전역 컴포넌트 적용
 //모든 곳에서 컴포넌트를 불러올수 있게 해줌

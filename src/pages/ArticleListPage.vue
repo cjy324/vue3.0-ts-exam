@@ -61,11 +61,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from 'vue'
  /* 전역 컴포넌트 적용으로 안해도 됨 
 import TitleBar from '../components/TitleBar.vue';
 */
 import { Article } from '../dtos/' /* '../dtos/index'이지만 생략가능 */
+import { IArticle } from '../types/'
+import { MainApi } from '../apis/'
+
 
 export default defineComponent({
   name: 'ArticleListPage',
@@ -74,6 +77,18 @@ export default defineComponent({
   최초 한 번 실행된 이후에는 재호출되지 않아야 한다.
   참고: setup() 함수 안에 선언된 변수는, draw() 함수를 비롯한 여타 함수들이 접근할 수 없다. */
   setup(){
+    const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
+
+    function loadArticles(){
+      mainApi.article_list(1)
+      .then(axiosResponse => {
+          console.log(axiosResponse.data.body.articles);
+      });
+    }
+
+    onMounted(loadArticles);
+
+
     /* ref: HTMLInputElement의 위치를 가져오는 것 */
     const newArticleTitleElRef = ref<HTMLInputElement>();
     const newArticleBodyElRef = ref<HTMLInputElement>();
