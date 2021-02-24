@@ -65,7 +65,7 @@ import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from 'v
  /* 전역 컴포넌트 적용으로 안해도 됨 
 import TitleBar from '../components/TitleBar.vue';
 */
-import { Article } from '../dtos/' /* '../dtos/index'이지만 생략가능 */
+//import { Article } from '../dtos/' /* '../dtos/index'이지만 생략가능 */
 import { IArticle } from '../types/'
 import { MainApi } from '../apis/'
 
@@ -78,16 +78,6 @@ export default defineComponent({
   참고: setup() 함수 안에 선언된 변수는, draw() 함수를 비롯한 여타 함수들이 접근할 수 없다. */
   setup(){
     const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
-
-    function loadArticles(){
-      mainApi.article_list(1)
-      .then(axiosResponse => {
-          console.log(axiosResponse.data.body.articles);
-      });
-    }
-
-    onMounted(loadArticles);
-
 
     /* ref: HTMLInputElement의 위치를 가져오는 것 */
     const newArticleTitleElRef = ref<HTMLInputElement>();
@@ -109,9 +99,20 @@ export default defineComponent({
     전반적으로 명료한 선언을 지향하는 방향으로 변화한 것으로 보입니다.
     */
     const state = reactive({
-      articles: [] as Article[]
+      articles: [] as IArticle[]
     });
 
+    function loadArticles(boardId:number){
+      mainApi.article_list(boardId)
+      .then(axiosResponse => {
+          state.articles = axiosResponse.data.body.articles;
+      });
+    }
+
+    onMounted(() => {
+      loadArticles(1);
+
+    });
 
     /* 공백 체크 */
     function checkAndWriteArticle(){
@@ -153,9 +154,9 @@ export default defineComponent({
 
     //typescript에서는 title:string, body:string 이런식으로 type을 적어주어야 한다
       function writeArticle(title:string, body:string){
-        const newArticle = new Article(title, body);
+        //const newArticle = new Article(title, body);
         
-        state.articles.push(newArticle);
+        //state.articles.push(newArticle);
       }
 
     return{
