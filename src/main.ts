@@ -23,8 +23,18 @@ const mainApi = new MainApi();
 
 // 라우팅 정보 설정(구성)
 const routes = [
-  { path: '/', component: HomeMainPage },
-  { path: '/article/list', component: ArticleListPage }
+  { 
+    path: '/', 
+    component: HomeMainPage 
+  },
+  { 
+    path: '/article/list', 
+    component: ArticleListPage, 
+    //주소에 바로 접근하지 않게끔하고
+    //props로 들어오는 경로로 접근하도록??
+    props: (route:any) => ({ boardId: route.query.boardId })
+  }
+    
 
 ];
 

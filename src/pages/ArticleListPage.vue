@@ -25,6 +25,11 @@
 
   <section class="section section-article-list px-2">
     <div class="container mx-auto">
+
+      <div class="btns mt-6">
+        <router-link class="btn-info" to="/article/list?boardId=1">공지사항 게시판</router-link>
+        <router-link class="btn-info" to="/article/list?boardId=2">자유 게시판</router-link>
+      </div>
       
       <div class="mt-6" v-bind:key="article.id" v-for="article in state.articles">
         <div class="px-10 py-6 bg-white rounded-lg shadow-md">
@@ -61,8 +66,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from 'vue'
+import { defineComponent, reactive, ref, getCurrentInstance, onMounted, watch } from 'vue'
+/** 21.02.25 props 설정으로 해당 로직 필요 없음
 import { useRoute } from 'vue-router'
+*/
 /* 전역 컴포넌트 적용으로 안해도 됨 
 import TitleBar from '../components/TitleBar.vue';
 */
@@ -73,12 +80,24 @@ import { MainApi } from '../apis/'
 
 export default defineComponent({
   name: 'ArticleListPage',
+
+  /* props를 추가 */
+  props: {
+    boardId: {
+      type: Number,
+      required: true,
+      default:1
+    }
+  },
+
   /* setup() 함수는 프로그램 실행시 단 한번 호출된다.
   setup() 함수는 프로그램당 한 개씩만 존재할 수 있으며, 
   최초 한 번 실행된 이후에는 재호출되지 않아야 한다.
   참고: setup() 함수 안에 선언된 변수는, draw() 함수를 비롯한 여타 함수들이 접근할 수 없다. */
-  setup(){
+  setup(props){
+    /** 21.02.25 props 설정으로 해당 로직 필요 없음
     const route = useRoute();  //useRoute 객체 생성
+    */
     const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
 
     /* ref: HTMLInputElement의 위치를 가져오는 것 */
@@ -111,15 +130,24 @@ export default defineComponent({
       });
     }
 
-    // 바로 실행하는 것이 아닌 모든 것이 준비되었을때 실행됨
+    // onMounted 바로 실행하는 것이 아닌 모든 것이 준비되었을때 실행됨
     onMounted(() => {
+      loadArticles(props.boardId);
+
+      /** 21.02.25 props 설정으로 해당 로직 필요 없어짐
       // route.query.boardId as any ?? "1" 
       // route.query.boardId가 null이거나 undifind이면 1을 적용하라는 의미
       const boardId = parseInt(route.query.boardId as string ?? "1");
       
       loadArticles(boardId);
-
+      */
     });
+
+    // watch 해당 내용에 변경이 있는지 계속 관찰
+    watch(() => props.boardId, (newValue, oldValue) => {
+      //만약 props.boardId 값이 바뀌면 아래 로직 실행
+      loadArticles(props.boardId);
+    })
 
     /* 공백 체크 */
     function checkAndWriteArticle(){
