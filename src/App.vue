@@ -4,7 +4,7 @@
 <template>
 
 
-  <header class="header-bar h-20 bg-gray-100">
+  <header class="header-bar h-20 bg-black text-white">
     <div class="container mx-auto flex h-full">
       <!-- router-link는 a와 같다고 보면 됨 -->
       <!-- to는 href -->
@@ -17,13 +17,23 @@
       <nav class="header-bar__menu-box-1">
         <ul class="flex h-full">
           <li>
-            <router-link to="/" class="h-full flex items-center font-bold px-4 hover:bg-black hover:text-white">
-              HOME
+            <router-link to="/" class="h-full flex items-center font-bold px-4 hover:bg-white hover:text-black">
+              홈
             </router-link>
           </li>
           <li>
-            <router-link to="/article/list" class="h-full flex items-center font-bold px-4 hover:bg-black hover:text-white">
-              ARTICLE LIST
+            <router-link to="/article/write" class="h-full flex items-center font-bold px-4 hover:bg-white hover:text-black">
+              글쓰기
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/article/list?boardId=1" class="h-full flex items-center font-bold px-4 hover:bg-white hover:text-black">
+              공지사항 게시판
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/article/list?boardId=2" class="h-full flex items-center font-bold px-4 hover:bg-white hover:text-black">
+              자유게시판
             </router-link>
           </li>
         </ul>

@@ -1,61 +1,37 @@
 <template>
 
-  <TitleBar class="bg-purple-500">Article List</TitleBar>
-
-  <section class="section section-article-write-form-box px-2">
-    <div class="container mx-auto">
-      <!--submint.prevent: 말그대로 submit을 막는 것-->
-      <form v-on:submit.prevent="checkAndWriteArticle">
-        <FormRow title="제목">
-          <input ref="newArticleTitleElRef" type="text" class="form-row-input" placeholder="제목을 입력하세요."> 
-        </FormRow>
-        <FormRow title="내용">
-          <textarea ref="newArticleBodyElRef" class="form-row-input" placeholder="내용을 입력하세요."></textarea>
-        </FormRow>
-        <FormRow>
-          <!-- App.vue로 부터 .btn-primary의 style 가져오기 -->
-          <div class="btns">
-            <input class="btn-primary" type="submit" value="등록">
-          </div>
-          
-        </FormRow>
-      </form>
-    </div>
-  </section>
+  <TitleBar>게시판</TitleBar>
 
   <section class="section section-article-list px-2">
     <div class="container mx-auto">
-
-      <div class="btns mt-6">
-        <router-link class="btn-info" to="/article/list?boardId=1">공지사항 게시판</router-link>
-        <router-link class="btn-info" to="/article/list?boardId=2">자유 게시판</router-link>
-      </div>
       
       <div class="mt-6" v-bind:key="article.id" v-for="article in state.articles">
         <div class="px-10 py-6 bg-white rounded-lg shadow-md">
           <div class="flex justify-between items-center">
             <span class="font-light text-gray-600">
-              2021-02-24 10:20:30
+              {{ article.regDate }}
             </span>
-            <a href="#" class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500">
-              자유
-            </a>
+            <router-link :to="'list?boardId='+ article.boardId" class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500">
+              {{ article.boardId == 1 ? "NOTICE" : "FREE" }}
+            </router-link>
           </div>
           <div class="mt-2">
-            <a href="#" class="text-2xl text-gray-700 font-bold hover:underline">
+            <router-link :to="'detail?id=' + article.id" class="text-2xl text-gray-700 font-bold hover:underline">
               {{ article.title }}
-            </a>
+            </router-link>
             <p class="mt-2 text-gray-600">
               {{ article.body }}
             </p>
           </div>
           <div class="flex justify-between items-center mt-4">
-            <a href="#" class="text-blue-500 hover:underline">자세히 보기</a>
+            <router-link :to="'detail?id=' + article.id" class="text-blue-500 hover:underline">
+              자세히 보기
+            </router-link>
             <div>
-              <a href="#" class="flex items-center">
+              <router-link :to="'detail?id=' + article.id" class="flex items-center">
                 <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80" alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block">
-                <h1 class="text-gray-700 font-bold hover:underline">홍길동</h1>
-              </a>
+                <h1 class="text-gray-700 font-bold hover:underline">{{article.extra__writer}}</h1>
+              </router-link>
             </div>
           </div>
         </div>

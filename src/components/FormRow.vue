@@ -32,7 +32,7 @@ export default defineComponent({  // 컴포넌트의 속성을 정의해주어�
   /* @apply? tailwind 방식을 style에 적용할 수 있도록 해주는 것? 
     즉, class에 css를 입력하는 tailwind를 style에 바로 입력하는 것  */
   /* rounded-sm =>	border-radius:0.125rem; */
-  @apply w-full rounded-xl;
+  @apply w-full rounded-sm;
 
 }
 

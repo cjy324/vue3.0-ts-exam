@@ -74,6 +74,14 @@ export interface MainApi__article_detail__IResponseBody extends Base__IResponseB
   };
 }
 
+// /usr/article/doAdd 의 응답 타입
+export interface MainApi__article_doWrite__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    id: number
+  };
+}
+
+
 // http://localhost:8021/usr/ 와의 통신장치
 export class MainApi extends HttpClient {
   public constructor() {
@@ -99,13 +107,19 @@ export class MainApi extends HttpClient {
     return axiosResponse;
   }
 
-  // http://localhost:8021/usr/article/list?boardId=? 를 요청하고 응답을 받아오는 함수
+  // http://localhost:8024/usr/article/list?boardId=? 를 요청하고 응답을 받아오는 함수
   public article_list(boardId: number) {
     return this.instance.get<MainApi__article_list__IResponseBody>(`/article/list?boardId=${boardId}`);
   }
 
-  // http://localhost:8021/usr/detail/id?id=? 를 요청하고 응답을 받아오는 함수
+  // http://localhost:8024/usr/detail/id=? 를 요청하고 응답을 받아오는 함수
   public article_detail(id: number) {
     return this.instance.get<MainApi__article_detail__IResponseBody>(`/article/detail?id=${id}`);
   }
+
+  // http://localhost:8024/usr/doAdd/boardId=?&title=?&body=? 를 요청하고 응답을 받아오는 함수
+  public article_doWrite(boardId:number, title: string, body: string) {
+    return this.instance.get<MainApi__article_doWrite__IResponseBody>(`/article/doAdd?boardId=${boardId}&title=${title}&body=${body}`);
+  }
+
 } 

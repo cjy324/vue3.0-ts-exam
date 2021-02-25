@@ -14,6 +14,8 @@ import FormRow from './components/FormRow.vue';
 // 각 페이지 불러오기
 import HomeMainPage from './pages/HomeMainPage.vue'
 import ArticleListPage from './pages/ArticleListPage.vue'
+import ArticleWritePage from './pages/ArticleWritePage.vue'
+import ArticleDetailPage from './pages/ArticleDetailPage.vue'
 
 // MainApi 불러오기
 import { MainApi } from './apis/'
@@ -33,6 +35,16 @@ const routes = [
     //주소에 바로 접근하지 않게끔하고
     //props로 들어오는 경로로 접근하도록??
     props: (route:any) => ({ boardId: route.query.boardId })
+  },
+  { 
+    path: '/article/write', 
+    component: ArticleWritePage, 
+    props: (route:any) => ({ boardId: route.query.boardId })
+  },
+  { 
+    path: '/article/detail', 
+    component: ArticleDetailPage, 
+    props: (route:any) => ({ id: route.query.id })
   }
     
 
@@ -51,16 +63,17 @@ const router = createRouter({
 //createApp(App).mount('#app') 이것을 풀어보면 아래와 같음
 const app = createApp(App);
 
-//앱에 라우터 적용
-app.use(router)
-
 //앱에 전역 라이브러리 등록
 app.config.globalProperties.$mainApi = mainApi;
+app.config.globalProperties.$router = router;
 
 //앱에 전역 컴포넌트 적용
 //모든 곳에서 컴포넌트를 불러올수 있게 해줌
 app.component('TitleBar',TitleBar)
 app.component('FormRow',FormRow)
+
+//앱에 라우터 적용
+app.use(router)
 
 //앱 표시
 app.mount('#app');
