@@ -18,6 +18,7 @@ import ArticleListPage from './pages/ArticleListPage.vue'
 import ArticleWritePage from './pages/ArticleWritePage.vue'
 import ArticleDetailPage from './pages/ArticleDetailPage.vue'
 import MemberLoginPage from './pages/MemberLoginPage.vue'
+import MemberJoinPage from './pages/MemberJoinPage.vue'
 
 // 전역state 만들기
 /// localStorage에서 로그인 정보 가져오기
@@ -93,6 +94,11 @@ const routes = [
   {
     path: '/member/login',
     component: MemberLoginPage,
+    props: (route:any) => ({globalShare})
+  },
+  {
+    path: '/member/join',
+    component: MemberJoinPage,
     props: (route:any) => ({globalShare})
   }
 

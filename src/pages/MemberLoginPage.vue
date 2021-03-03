@@ -26,12 +26,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, getCurrentInstance, onMounted } from 'vue'
+import { defineComponent, ref, getCurrentInstance, onMounted } from 'vue'
 import { IArticle } from '../types/'
 import { MainApi } from '../apis/'
-import { Router } from 'vue-router';
+import { useRoute } from 'vue-router'
+import { Router } from 'vue-router'
+
 export default defineComponent({
-  name: 'ArticleWritePage',
+  name: 'MemberLoginPage',
   props: {
     globalShare: {
       type: Object,
@@ -39,10 +41,31 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const route = useRoute();
     const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
     const loginIdElRef = ref<HTMLInputElement>();
     const loginPwElRef = ref<HTMLInputElement>();
+
+
+    
+    onMounted(() => {
+      // 만약, route로 들어온 쿼리의 loginId가 null이 아니면
+      if ( route.query.loginId != null ) {
+        if ( loginIdElRef.value == null ) {
+          return;
+        }
+        if ( loginPwElRef.value == null ) {
+          return;
+        }
+
+        // loginIdElRef 값에 route.query.loginId 정보 담기
+        loginIdElRef.value.value = route.query.loginId as any;
+        // loginPwElRef에 포커스
+        loginPwElRef.value.focus();
+      }
+    })
+
 
     function checkAndLogin() {
       if ( loginIdElRef.value == null ) {

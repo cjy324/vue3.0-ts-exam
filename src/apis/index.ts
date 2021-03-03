@@ -113,6 +113,13 @@ export interface MainApi__member_authKey__IResponseBody extends Base__IResponseB
   };
 }
 
+// /usr/member/doJoin 의 응답 타입
+export interface MainApi__member_doJoin__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    id: number
+  };
+}
+
 
 // http://localhost:8024/usr/ 와의 통신장치
 export class MainApi extends HttpClient {
@@ -183,5 +190,19 @@ export class MainApi extends HttpClient {
   public member_authKey(loginId: string, loginPw: string) {
       return this.instance.get<MainApi__member_authKey__IResponseBody>(`/member/authKey?loginId=${loginId}&loginPw=${loginPw}`);
     }
+
+  // http://localhost:8024/usr/member/doJoin/loginId=?&loginPw=?...... 를 요청하고 응답을 받아오는 함수
+  public member_doJoin(loginId:string, loginPw:string, name:string, nickname:string, cellphoneNo:string, email:string) {
+    return this.postByForm<MainApi__member_doJoin__IResponseBody>(
+      `/member/doJoin`, {
+        loginId,
+        loginPw,
+        name,
+        nickname,
+        cellphoneNo,
+        email
+      }
+    );
+  }
 
 } 

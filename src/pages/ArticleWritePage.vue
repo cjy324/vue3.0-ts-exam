@@ -36,13 +36,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from 'vue'
-import { IArticle } from '../types/'
 import { MainApi } from '../apis/'
 import { Router } from 'vue-router'
 
 
 export default defineComponent({
-  name: 'ArticleListPage',
+  name: 'ArticleWritePage',
 
   props: {
     globalShare: {
