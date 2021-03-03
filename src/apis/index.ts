@@ -52,6 +52,26 @@ abstract class HttpClient {
 
     return Promise.reject(error);
   };
+
+  // POST전송으로 전송하기 위한 로직
+  public postByForm<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
+    const params = new URLSearchParams();
+
+    for ( let key in data ) {
+      params.append(key, data[key]);
+    }
+
+    config =  {} as AxiosRequestConfig;
+
+    config.headers = {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Accept': '*/*'
+    };
+
+    return this.instance.post(url, params, config);
+  }
+
+
 }
 
 // 응답타입1
@@ -82,12 +102,12 @@ export interface MainApi__article_doWrite__IResponseBody extends Base__IResponse
 }
 
 
-// http://localhost:8021/usr/ 와의 통신장치
+// http://localhost:8024/usr/ 와의 통신장치
 export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://localhost:8021/usr/',
+        baseURL:'http://localhost:8024/usr/',
       })
     );
   }
@@ -99,7 +119,7 @@ export class MainApi extends HttpClient {
   };
 
   protected _handleResponse(axiosResponse:AxiosResponse) : AxiosResponse {
-    if ( axiosResponse?.data?.requestCode == "F-B" ) {
+    if ( axiosResponse?.data?.resultCode == "F-B" ) {
       alert('로그인 후 이용해주세요.');
       location.replace('/member/login');
     }
@@ -118,8 +138,15 @@ export class MainApi extends HttpClient {
   }
 
   // http://localhost:8024/usr/doAdd/boardId=?&title=?&body=? 를 요청하고 응답을 받아오는 함수
+  // postByForm: post 전송을 스프링이 이해할 수 있는 form형식으로 전송시켜주는 함수?
   public article_doWrite(boardId:number, title: string, body: string) {
-    return this.instance.get<MainApi__article_doWrite__IResponseBody>(`/article/doAdd?boardId=${boardId}&title=${title}&body=${body}`);
+    return this.postByForm<MainApi__article_doWrite__IResponseBody>(
+      `/article/doAdd`, {
+        boardId,
+        title,
+        body
+      }
+    );
   }
 
 } 

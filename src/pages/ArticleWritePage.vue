@@ -99,10 +99,10 @@ export default defineComponent({
         .then(axiosResponse => {
           
           const newArticleId = axiosResponse.data.body.id;
-          
+
           alert(newArticleId + "번 게시물 등록 완료!!");
 
-          router.push("/detail?id=" + newArticleId);
+          router.push("detail?id=" + newArticleId);
         });
       }
 
