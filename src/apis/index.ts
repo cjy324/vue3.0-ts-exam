@@ -119,7 +119,17 @@ export class MainApi extends HttpClient {
   };
 
   protected _handleResponse(axiosResponse:AxiosResponse) : AxiosResponse {
-    if ( axiosResponse?.data?.resultCode == "F-B" ) {
+
+    // 로그인 정보 체크
+    // axiosResponse?.data?.resultCode == "F-A" || axiosResponse?.data?.resultCode == "F-B" (초보 버전)
+    // axiosResponse?.data?.resultCode == "F-A" => 로그인 정보가 아예 없는 경우
+    // axiosResponse?.data?.resultCode == "F-B" => 로그인 정보가 틀린 경우
+
+    // axiosResponse?.data?.resultCode == "F-A" || axiosResponse?.data?.resultCode == "F-B" (초보 버전)
+    //["F-A", "F-B"].includes(axiosResponse?.data?.resultCode) (고급 버전)
+    
+    /* 로그인 정보 체크 후 로그인 화면으로 이동 */
+    if (["F-A", "F-B"].includes(axiosResponse?.data?.resultCode)) {
       alert('로그인 후 이용해주세요.');
       location.replace('/member/login');
     }
