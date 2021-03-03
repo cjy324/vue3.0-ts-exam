@@ -59,6 +59,10 @@ export default defineComponent({
 
   /* props를 추가 */
   props: {
+    globalShare: {
+      type: Object,
+      required: true
+    },
     boardId: {
       type: Number,
       required: true,

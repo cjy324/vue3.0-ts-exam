@@ -15,6 +15,13 @@ import TitleBar from '../components/TitleBar.vue';
 
 export default defineComponent({
   name: 'HomeMainPage',
+  props: {
+    globalShare: {
+      type: Object,
+      required: true
+    }
+  },
+
 
   /* 전역 컴포넌트 적용으로 안해도 됨
    components: {

@@ -5,7 +5,7 @@
   <section class="section section-article-write-form-box px-2">
     <div class="container mx-auto">
       <div class="px-6 py-6 bg-white rounded-lg shadow-md">
-        <form v-on:submit.prevent="checkAndWriteArticle">
+        <form v-if="globalShare.isLogined" v-on:submit.prevent="checkAndWriteArticle">
           <FormRow title="게시판">
             <select class="form-row-select" ref="newArticleBoardIdElRef">
               <option value="1">공지사항</option>
@@ -24,6 +24,9 @@
             </div>
           </FormRow>
         </form>
+        <div v-else>
+          <route-link class="btn-link" to="/member/login">로그인</route-link> 후 이용해주세요.
+        </div>
       </div>
     </div>
   </section>
@@ -42,6 +45,10 @@ export default defineComponent({
   name: 'ArticleListPage',
 
   props: {
+    globalShare: {
+      type: Object,
+      required: true
+    },
     boardId: {
       type: Number,
       required: true,
