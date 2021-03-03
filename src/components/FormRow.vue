@@ -28,6 +28,11 @@ export default defineComponent({  // 컴포넌트의 속성을 정의해주어�
 
 <!--FormRow의 css를 post 방식으로 전송-->
 <style lang="postcss">
+.form-row-select{
+  @apply w-full rounded-sm;
+}
+
+
 .form-row-input{
   /* @apply? tailwind 방식을 style에 적용할 수 있도록 해주는 것? 
     즉, class에 css를 입력하는 tailwind를 style에 바로 입력하는 것  */

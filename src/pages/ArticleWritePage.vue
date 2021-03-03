@@ -5,6 +5,12 @@
   <section class="section section-article-write-form-box px-2">
     <div class="container mx-auto">
       <form v-on:submit.prevent="checkAndWriteArticle">
+        <FormRow title="게시판">
+          <select class="form-row-select" ref="newArticleBoardIdElRef">
+            <option value="1">NOTICE</option>
+            <option value="2">FREE</option>
+          </select>
+        </FormRow>
         <FormRow title="제목">
           <input ref="newArticleTitleElRef" type="text" class="form-row-input" placeholder="제목을 입력하세요."> 
         </FormRow>
@@ -25,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, getCurrentInstance, onMounted, watch } from 'vue'
+import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from 'vue'
 import { IArticle } from '../types/'
 import { MainApi } from '../apis/'
 import { Router } from 'vue-router'
@@ -46,6 +52,7 @@ export default defineComponent({
     const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
 
+    const newArticleBoardIdElRef = ref<HTMLInputElement>();
     const newArticleTitleElRef = ref<HTMLInputElement>();
     const newArticleBodyElRef = ref<HTMLInputElement>();
 
@@ -53,8 +60,24 @@ export default defineComponent({
       articles: [] as IArticle[]
     });
 
+    //boardId 파라미터 값에 따라 게시판 선택 옵션 값(newArticleBoardIdElRef.value.value)이 바뀜
+    onMounted(() => {
+        if(newArticleBoardIdElRef.value == null){
+        return;
+      }
+        newArticleBoardIdElRef.value.value = props.boardId + "";
+      });
+
     /* 공백 체크 */
     function checkAndWriteArticle(){
+
+      if(newArticleBoardIdElRef.value == null){
+        return;
+      }
+
+      const newArticleBoardIdEl = newArticleBoardIdElRef.value;
+
+
       //일반적으로 안해도 되지만 typescript에서는 해야됨
       if(newArticleTitleElRef.value == null){
         return;
@@ -83,7 +106,7 @@ export default defineComponent({
       }
 
       // 글작성 함수로 보내기
-      writeArticle(newArticleTitleEl.value, newArticleBodyEl.value);
+      writeArticle(parseInt(newArticleBoardIdEl.value), newArticleTitleEl.value, newArticleBodyEl.value);
 
       // 글작성 후 내용 초기화
       newArticleTitleEl.value = '';
@@ -93,13 +116,13 @@ export default defineComponent({
     }
 
     //typescript에서는 title:string, body:string 이런식으로 type을 적어주어야 한다
-      function writeArticle(title:string, body:string){
+      function writeArticle(boardId:number, title:string, body:string){
        
-        mainApi.article_doWrite(props.boardId, title, body)
+        mainApi.article_doWrite(boardId, title, body)
         .then(axiosResponse => {
           
+          //authKey가 있는 상태에서 가능
           const newArticleId = axiosResponse.data.body.id;
-
           alert(newArticleId + "번 게시물 등록 완료!!");
 
           router.push("detail?id=" + newArticleId);
@@ -108,6 +131,7 @@ export default defineComponent({
 
     return{
       state,
+      newArticleBoardIdElRef,
       newArticleTitleElRef,
       newArticleBodyElRef,
       checkAndWriteArticle
