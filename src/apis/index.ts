@@ -141,6 +141,13 @@ export class MainApi extends HttpClient {
     /* 로그인 정보 체크 후 로그인 화면으로 이동 */
     if (["F-A", "F-B"].includes(axiosResponse?.data?.resultCode)) {
       alert('로그인 후 이용해주세요.');
+
+      //비정상 로그인인 경우 localStorage 초기화
+      localStorage.removeItem("authKey");
+      localStorage.removeItem("loginedMemberId");
+      localStorage.removeItem("loginedMemberName");
+      localStorage.removeItem("loginedMemberNickname");
+
       location.replace('/member/login');
     }
 
