@@ -8,8 +8,8 @@
         <form v-if="globalShare.isLogined" v-on:submit.prevent="checkAndWriteArticle">
           <FormRow title="게시판">
             <select class="form-row-select" ref="newArticleBoardIdElRef">
-              <option value="1">공지사항</option>
-              <option value="2">자유</option>
+              <option value="1">NOTICE</option>
+              <option value="2">FREE</option>
             </select>
           </FormRow>
           <FormRow title="제목">
@@ -25,7 +25,7 @@
           </FormRow>
         </form>
         <div v-else>
-          <route-link class="btn-link" to="/member/login">로그인</route-link> 후 이용해주세요.
+          <router-link class="btn-link" to="/member/login">로그인</router-link> 후 이용해주세요.
         </div>
       </div>
     </div>
@@ -119,12 +119,18 @@ export default defineComponent({
        
         mainApi.article_doWrite(boardId, title, body)
         .then(axiosResponse => {
+          alert(axiosResponse.data.msg);
           
+          // 로그인이 fail 상태이면 리턴
+          if ( axiosResponse.data.fail ) {
+            return;
+          }
+
           //authKey가 있는 상태에서 가능
           const newArticleId = axiosResponse.data.body.id;
-          alert(newArticleId + "번 게시물 등록 완료!!");
+          //alert(newArticleId + "번 게시물 등록 완료!!");
 
-          router.push("detail?id=" + newArticleId);
+          router.replace("detail?id=" + newArticleId);
         });
       }
 
