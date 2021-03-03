@@ -101,7 +101,7 @@ export default defineComponent({
             nickname:loginedMemberNickname,
           };
 
-          alert(axiosResponse.data.msg);
+          //alert(axiosResponse.data.msg);
 
           router.replace('/')
         });

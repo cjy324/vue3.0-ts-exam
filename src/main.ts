@@ -42,7 +42,17 @@ const globalShare:any = reactive({
   //globalShare.loginedMember가 비어있지 않는지를 computed로 자동 체크
   //비어있지 않다면(===false) isLogined
   //isLogined: computed(() => Util.isEmptyObject(globalShare.loginedMember) === false)  
-  isLogined: computed(() => globalShare.loginedMember.id !== null )
+  isLogined: computed(() => globalShare.loginedMember.id !== null ),
+  
+  //로그아웃
+  logout: () => { 
+      localStorage.removeItem("authKey");
+      localStorage.removeItem("loginedMemberId");
+      localStorage.removeItem("loginedMemberName");
+      localStorage.removeItem("loginedMemberNickname");
+
+      location.replace('/member/login');
+  }
 });
 
 /*테스트용

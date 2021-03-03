@@ -32,6 +32,11 @@
             </router-link>
           </li>
           <li v-if="globalShare.isLogined">
+            <a v-on:click="globalShare.logout" class="cursor-pointer h-full flex items-center font-bold px-4 hover:bg-white hover:text-black whitespace-nowrap">
+              로그아웃
+            </a>
+          </li>
+          <li v-if="globalShare.isLogined">
             <router-link to="/article/write" class="h-full flex items-center font-bold px-4 hover:bg-white hover:text-black whitespace-nowrap">
               글쓰기
             </router-link>
