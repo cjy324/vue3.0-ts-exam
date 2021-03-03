@@ -64,10 +64,6 @@ export default defineComponent({
     const newArticleTitleElRef = ref<HTMLInputElement>();
     const newArticleBodyElRef = ref<HTMLInputElement>();
 
-    const state = reactive({
-      articles: [] as IArticle[]
-    });
-
     //boardId 파라미터 값에 따라 게시판 선택 옵션 값(newArticleBoardIdElRef.value.value)이 바뀜
     onMounted(() => {
         if(newArticleBoardIdElRef.value == null){
@@ -116,11 +112,6 @@ export default defineComponent({
       // 글작성 함수로 보내기
       writeArticle(parseInt(newArticleBoardIdEl.value), newArticleTitleEl.value, newArticleBodyEl.value);
 
-      // 글작성 후 내용 초기화
-      newArticleTitleEl.value = '';
-      newArticleBodyEl.value = '';
-
-      newArticleTitleEl.focus();
     }
 
     //typescript에서는 title:string, body:string 이런식으로 type을 적어주어야 한다
@@ -138,7 +129,6 @@ export default defineComponent({
       }
 
     return{
-      state,
       newArticleBoardIdElRef,
       newArticleTitleElRef,
       newArticleBodyElRef,

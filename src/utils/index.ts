@@ -13,7 +13,12 @@ export function toInt(data:any, defaultValue:any) {
   return parseInt(data)
 }
 
-// defaultValue값에 undefined(null과 같은 개념) 담고 toInt()로 넘김
+// defaultValue값에 undefined(null과 비슷한 개념) 담고 toInt()로 넘김
 export function toIntOrUnd(data:any) {
   return toInt(data, undefined);
+} 
+
+// defaultValue값에 null 담고 toInt()로 넘김
+export function toIntOrNull(data:any) {
+  return toInt(data, null);
 } 

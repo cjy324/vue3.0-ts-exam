@@ -17,24 +17,39 @@ import HomeMainPage from './pages/HomeMainPage.vue'
 import ArticleListPage from './pages/ArticleListPage.vue'
 import ArticleWritePage from './pages/ArticleWritePage.vue'
 import ArticleDetailPage from './pages/ArticleDetailPage.vue'
+import MemberLoginPage from './pages/MemberLoginPage.vue'
 
-// 전역state 생성
+// 전역state 만들기
+/// localStorage에서 로그인 정보 가져오기
+const authKey = localStorage.getItem("authKey")
+const loginedMemberId  = Util.toIntOrNull(localStorage.getItem("loginedMemberId"))
+const loginedMemberName = localStorage.getItem("loginedMemberName")
+const loginedMemberNickname  = localStorage.getItem("loginedMemberNickname")
+
 /*state => 상태
 페이지 글과 같은 state는 전역적으로 필요하지 않음
 하지만 로그인 정보의 경우 전역적으로 필요함 
 이를 위해 전역state(=> globalShare)를 구축해야함*/
 const globalShare:any = reactive({
-  loginedMember:{},  //loginedMember는 비어있는 상태
+  //loginedMember:{},  //loginedMember:{}는 비어있는 상태
+  //로그인 정보 채우기
+  loginedMember:{
+    authKey,
+    id:loginedMemberId,
+    name:loginedMemberName,
+    nickname:loginedMemberNickname,
+  },
   //globalShare.loginedMember가 비어있지 않는지를 computed로 자동 체크
   //비어있지 않다면(===false) isLogined
-  isLogined: computed(() => Util.isEmptyObject(globalShare.loginedMember) === false)  
+  //isLogined: computed(() => Util.isEmptyObject(globalShare.loginedMember) === false)  
+  isLogined: computed(() => globalShare.loginedMember.id !== null )
 });
 
-//테스트용
+/*테스트용
 setTimeout(() => {
   globalShare.loginedMember.id = 1;
-}, 10000);
-
+}, 5000);
+*/
 
 // MainApi 불러오기
 import { MainApi } from './apis/'
@@ -64,7 +79,13 @@ const routes = [
     path: '/article/detail', 
     component: ArticleDetailPage, 
     props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalShare })
+  },
+  {
+    path: '/member/login',
+    component: MemberLoginPage,
+    props: (route:any) => ({globalShare})
   }
+
     
 
 ];

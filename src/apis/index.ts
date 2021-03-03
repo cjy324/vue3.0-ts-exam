@@ -101,6 +101,16 @@ export interface MainApi__article_doWrite__IResponseBody extends Base__IResponse
   };
 }
 
+// /usr/member/authKey 의 응답 타입
+export interface MainApi__member_authKey__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    authKey : string,
+    id : number,
+    name : string,
+    nickname : string
+  };
+}
+
 
 // http://localhost:8024/usr/ 와의 통신장치
 export class MainApi extends HttpClient {
@@ -147,7 +157,7 @@ export class MainApi extends HttpClient {
     return this.instance.get<MainApi__article_detail__IResponseBody>(`/article/detail?id=${id}`);
   }
 
-  // http://localhost:8024/usr/doAdd/boardId=?&title=?&body=? 를 요청하고 응답을 받아오는 함수
+  // http://localhost:8024/usr/article/doAdd/boardId=?&title=?&body=? 를 요청하고 응답을 받아오는 함수
   // postByForm: post 전송을 스프링이 이해할 수 있는 form형식으로 전송시켜주는 함수?
   public article_doWrite(boardId:number, title: string, body: string) {
     return this.postByForm<MainApi__article_doWrite__IResponseBody>(
@@ -158,5 +168,11 @@ export class MainApi extends HttpClient {
       }
     );
   }
+
+  // http://localhost:8024/usr/member/authKey/loginId=?&loginPw=? 를 요청하고 응답을 받아오는 함수
+  // postByForm: post 전송을 스프링이 이해할 수 있는 form형식으로 전송시켜주는 함수?
+  public member_authKey(loginId: string, loginPw: string) {
+      return this.instance.get<MainApi__member_authKey__IResponseBody>(`/member/authKey?loginId=${loginId}&loginPw=${loginPw}`);
+    }
 
 } 
