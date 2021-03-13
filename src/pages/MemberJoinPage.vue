@@ -5,6 +5,9 @@
     <div class="container mx-auto">
       <div class="px-6 py-6 bg-white rounded-lg shadow-md">
         <form v-if="globalShare.isLogined == false" v-on:submit.prevent="checkAndJoin">
+          <FormRow title="프로필 이미지">
+            <input ref="profileImgElRef" class="form-row-input" type="file" placeholder="프로필 이미지를 선택해 주세요.">
+          </FormRow>
           <FormRow title="아이디">
             <input ref="loginIdElRef" class="form-row-input" type="text" placeholder="아이디를 입력해주세요.">
           </FormRow>
@@ -21,7 +24,7 @@
             <input ref="nicknameElRef" class="form-row-input" type="text" placeholder="닉네임을 입력해주세요.">
           </FormRow>
           <FormRow title="전화번호">
-            <input ref="cellphoneNoElRef" class="form-row-input" type="tel" placeholder="전화번호를 입력해주세요.">
+            <input ref="cellphoneNoElRef" class="form-row-input" type="tel" maxlength="11" placeholder="전화번호를 입력해주세요.">
           </FormRow>
           <FormRow title="이메일">
             <input ref="emailElRef" class="form-row-input" type="email" placeholder="이메일을 입력해주세요.">
@@ -56,6 +59,7 @@ export default defineComponent({
   setup(props) {
     const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = getCurrentInstance()?.appContext.config.globalProperties.$mainApi;
+    const profileImgElRef = ref<HTMLInputElement>();
     const loginIdElRef = ref<HTMLInputElement>();
     const loginPwElRef = ref<HTMLInputElement>();
     const loginPwConfirmElRef = ref<HTMLInputElement>();
@@ -162,11 +166,49 @@ export default defineComponent({
         return;
       }
       
-      //회원가입
-      join(loginIdEl.value, loginPwEl.value, nameEl.value, nicknameEl.value, cellphoneNoEl.value, emailEl.value);
+      
+      const startFileUpload = (onSuccess:Function) => {
+        // ! => 반전
+        // a = undefinded(or null) / !a = true / !!a = flase란 의미
+        // ? => 만약 profileImgElRef.value?까지가 null이면 여기까지만 실행하겠다라는 의미
+        // 즉, !!!profileImgElRef.value?.files의 의미는 해당 파일이 없는지 물어보는 것
+        // 없으면 true
+        if(!!!profileImgElRef.value?.files){
+          onSuccess("");  //파일이 없으면 다음 과정 생략하고 onSuccess() 즉시 실행
+          return;
+        }
+
+        mainApi.common_genFile_doUpload(profileImgElRef.value?.files[0])
+        .then(axiosResponse => {
+          
+          if ( axiosResponse.data.fail ) {
+            alert(axiosResponse.data.msg);
+            return;
+          }
+          else{
+            onSuccess(axiosResponse.data.body.genFileIdsStr);
+          }
+        });
+      };
+
+
+      //회원가입 join함수 시작
+      //파일첨부기능 추가로 인해 로직 변경
+      //join(loginIdEl.value, loginPwEl.value, nameEl.value, nicknameEl.value, cellphoneNoEl.value, emailEl.value);
+      const startJoin = (genFileIdsStr:string) =>{
+        join(loginIdEl.value, loginPwEl.value, nameEl.value, nicknameEl.value, cellphoneNoEl.value, emailEl.value, genFileIdsStr);
+      };
+
+      //startFileUpload 로직을 먼저 실행한 후
+      //onSuccess 즉, startJoin를 실행한다. onSuccess = startJoin
+      //실행 순서 : 1.첨부파일이 있는지 확인하고 업로드까지 진행하는 startFileUpload함수 종료 후 2.회원가입 join함수가 실행된다.
+      startFileUpload(startJoin);
+
+
+      
     }
-    function join(loginId:string, loginPw:string, name:string, nickname:string, cellphoneNo:string, email:string) {
-      mainApi.member_doJoin(loginId, loginPw, name, nickname, cellphoneNo, email)
+    function join(loginId:string, loginPw:string, name:string, nickname:string, cellphoneNo:string, email:string, genFileIdsStr:string) {
+      mainApi.member_doJoin(loginId, loginPw, name, nickname, cellphoneNo, email, genFileIdsStr)
         .then(axiosResponse => {
           
           alert(axiosResponse.data.msg);
@@ -179,6 +221,7 @@ export default defineComponent({
     }
     return {
       checkAndJoin,
+      profileImgElRef,
       loginIdElRef,
       loginPwElRef,
       loginPwConfirmElRef,

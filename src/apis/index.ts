@@ -53,7 +53,7 @@ abstract class HttpClient {
     return Promise.reject(error);
   };
 
-  // POST전송으로 전송하기 위한 로직
+  // POST(form)전송으로 전송하기 위한 로직
   public postByForm<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
     const params = new URLSearchParams();
 
@@ -70,6 +70,12 @@ abstract class HttpClient {
 
     return this.instance.post(url, params, config);
   }
+
+  // POST전송으로 바로 전송하기 위한 로직
+  public post<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
+    return this.instance.post(url, data, config);
+  }
+
 
 
 }
@@ -120,13 +126,20 @@ export interface MainApi__member_doJoin__IResponseBody extends Base__IResponseBo
   };
 }
 
+// /common/genFile/doUpload 의 응답 타입
+export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    genFileIdsStr: string
+  };
+}
 
-// http://localhost:8024/usr/ 와의 통신장치
+
+// http://localhost:8024/ 와의 통신장치
 export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://localhost:8024/usr/',
+        baseURL:'http://localhost:8024',
       })
     );
   }
@@ -157,7 +170,7 @@ export class MainApi extends HttpClient {
       localStorage.removeItem("loginedMemberName");
       localStorage.removeItem("loginedMemberNickname");
 
-      location.replace('/member/login');
+      location.replace('/usr/member/login');
     }
 
     return axiosResponse;
@@ -165,19 +178,19 @@ export class MainApi extends HttpClient {
 
   // http://localhost:8024/usr/article/list?boardId=? 를 요청하고 응답을 받아오는 함수
   public article_list(boardId: number) {
-    return this.instance.get<MainApi__article_list__IResponseBody>(`/article/list?boardId=${boardId}`);
+    return this.instance.get<MainApi__article_list__IResponseBody>(`/usr/article/list?boardId=${boardId}`);
   }
 
   // http://localhost:8024/usr/detail/id=? 를 요청하고 응답을 받아오는 함수
   public article_detail(id: number) {
-    return this.instance.get<MainApi__article_detail__IResponseBody>(`/article/detail?id=${id}`);
+    return this.instance.get<MainApi__article_detail__IResponseBody>(`/usr/article/detail?id=${id}`);
   }
 
   // http://localhost:8024/usr/article/doAdd/boardId=?&title=?&body=? 를 요청하고 응답을 받아오는 함수
   // postByForm: post 전송을 스프링이 이해할 수 있는 form형식으로 전송시켜주는 함수?
   public article_doWrite(boardId:number, title: string, body: string) {
     return this.postByForm<MainApi__article_doWrite__IResponseBody>(
-      `/article/doAdd`, {
+      `/usr/article/doAdd`, {
         boardId,
         title,
         body
@@ -186,22 +199,32 @@ export class MainApi extends HttpClient {
   }
 
   // http://localhost:8024/usr/member/authKey/loginId=?&loginPw=? 를 요청하고 응답을 받아오는 함수
-  // postByForm: post 전송을 스프링이 이해할 수 있는 form형식으로 전송시켜주는 함수?
   public member_authKey(loginId: string, loginPw: string) {
-      return this.instance.get<MainApi__member_authKey__IResponseBody>(`/member/authKey?loginId=${loginId}&loginPw=${loginPw}`);
+      return this.instance.get<MainApi__member_authKey__IResponseBody>(`/usr/member/authKey?loginId=${loginId}&loginPw=${loginPw}`);
     }
 
   // http://localhost:8024/usr/member/doJoin/loginId=?&loginPw=?...... 를 요청하고 응답을 받아오는 함수
-  public member_doJoin(loginId:string, loginPw:string, name:string, nickname:string, cellphoneNo:string, email:string) {
+   // postByForm: post 전송을 스프링이 이해할 수 있는 form형식으로 전송시켜주는 함수?
+  public member_doJoin(loginId:string, loginPw:string, name:string, nickname:string, cellphoneNo:string, email:string, genFileIdsStr:string) {
     return this.postByForm<MainApi__member_doJoin__IResponseBody>(
-      `/member/doJoin`, {
+      `/usr/member/doJoin`, {
         loginId,
         loginPw,
         name,
         nickname,
         cellphoneNo,
-        email
+        email,
+        genFileIdsStr
       }
+    );
+  }
+
+  // http://localhost:8024/common/genFile/doUpload=?&profileImg=?...... 를 요청하고 응답을 받아오는 함수
+  public common_genFile_doUpload(profileImg:File) {
+    const formData = new FormData();
+    formData.append("file__member__0__common__attachment__1", profileImg);
+    return this.post<MainApi__common_genFile_doUpload__IResponseBody>(
+      `/common/genFile/doUpload`, formData
     );
   }
 
