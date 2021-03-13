@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import {IArticle} from '../types'
+import {IArticle, IMember} from '../types'
 
 // API 원형
 abstract class HttpClient {
@@ -52,6 +52,11 @@ abstract class HttpClient {
 
     return Promise.reject(error);
   };
+
+  // get전송으로 바로 전송하기 위한 로직
+  public get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
+    return this.instance.get(url, config);
+  }
 
   // POST(form)전송으로 전송하기 위한 로직
   public postByForm<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
@@ -113,9 +118,7 @@ export interface MainApi__article_doWrite__IResponseBody extends Base__IResponse
 export interface MainApi__member_authKey__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     authKey : string,
-    id : number,
-    name : string,
-    nickname : string
+    member : IMember,
   };
 }
 
@@ -169,6 +172,7 @@ export class MainApi extends HttpClient {
       localStorage.removeItem("loginedMemberId");
       localStorage.removeItem("loginedMemberName");
       localStorage.removeItem("loginedMemberNickname");
+      localStorage.removeItem("loginedMemberProfileImgUrl");
 
       location.replace('/usr/member/login');
     }
@@ -176,14 +180,16 @@ export class MainApi extends HttpClient {
     return axiosResponse;
   }
 
+  /* Article 관련 */
+
   // http://localhost:8024/usr/article/list?boardId=? 를 요청하고 응답을 받아오는 함수
   public article_list(boardId: number) {
-    return this.instance.get<MainApi__article_list__IResponseBody>(`/usr/article/list?boardId=${boardId}`);
+    return this.get<MainApi__article_list__IResponseBody>(`/usr/article/list?boardId=${boardId}`);
   }
 
   // http://localhost:8024/usr/detail/id=? 를 요청하고 응답을 받아오는 함수
   public article_detail(id: number) {
-    return this.instance.get<MainApi__article_detail__IResponseBody>(`/usr/article/detail?id=${id}`);
+    return this.get<MainApi__article_detail__IResponseBody>(`/usr/article/detail?id=${id}`);
   }
 
   // http://localhost:8024/usr/article/doAdd/boardId=?&title=?&body=? 를 요청하고 응답을 받아오는 함수
@@ -198,9 +204,16 @@ export class MainApi extends HttpClient {
     );
   }
 
+  /* Member 관련 */
+
   // http://localhost:8024/usr/member/authKey/loginId=?&loginPw=? 를 요청하고 응답을 받아오는 함수
   public member_authKey(loginId: string, loginPw: string) {
-      return this.instance.get<MainApi__member_authKey__IResponseBody>(`/usr/member/authKey?loginId=${loginId}&loginPw=${loginPw}`);
+      return this.postByForm<MainApi__member_authKey__IResponseBody>(
+        `/usr/member/authKey`, {
+          loginId,
+          loginPw,
+        }
+      );
     }
 
   // http://localhost:8024/usr/member/doJoin/loginId=?&loginPw=?...... 를 요청하고 응답을 받아오는 함수

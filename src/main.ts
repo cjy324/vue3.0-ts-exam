@@ -24,8 +24,12 @@ import MemberJoinPage from './pages/MemberJoinPage.vue'
 /// localStorage에서 로그인 정보 가져오기
 const authKey = localStorage.getItem("authKey")
 const loginedMemberId  = Util.toIntOrNull(localStorage.getItem("loginedMemberId"))
-const loginedMemberName = localStorage.getItem("loginedMemberName")
-const loginedMemberNickname  = localStorage.getItem("loginedMemberNickname")
+// localStorage에 저장될 때 문장화가 됨 
+// null이 "null"과 같이 문장이되어 저장되어버림
+// 이 버그를 방지하기위해 Util.toStringOrNull()함수 적용
+const loginedMemberName = Util.toStringOrNull(localStorage.getItem("loginedMemberName"))
+const loginedMemberNickname  = Util.toStringOrNull(localStorage.getItem("loginedMemberNickname"))
+const loginedMemberProfileImgUrl  = Util.toStringOrNull(localStorage.getItem("loginedMemberProfileImgUrl"))
 
 /*state => 상태
 페이지 글과 같은 state는 전역적으로 필요하지 않음
@@ -39,6 +43,7 @@ const globalShare:any = reactive({
     id:loginedMemberId,
     name:loginedMemberName,
     nickname:loginedMemberNickname,
+    profileImgUrl:loginedMemberProfileImgUrl
   },
   //globalShare.loginedMember가 비어있지 않는지를 computed로 자동 체크
   //비어있지 않다면(===false) isLogined
@@ -51,6 +56,7 @@ const globalShare:any = reactive({
       localStorage.removeItem("loginedMemberId");
       localStorage.removeItem("loginedMemberName");
       localStorage.removeItem("loginedMemberNickname");
+      localStorage.removeItem("loginedMemberProfileImgUrl");
 
       location.replace('/member/login');
   }

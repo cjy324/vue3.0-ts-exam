@@ -108,20 +108,33 @@ export default defineComponent({
           }
 
           const authKey = axiosResponse.data.body.authKey;
-          const loginedMemberId = axiosResponse.data.body.id;
-          const loginedMemberName = axiosResponse.data.body.name;
-          const loginedMemberNickname = axiosResponse.data.body.nickname;
+          //로그인 프로토콜 변경으로 삭제
+          //const loginedMemberId = axiosResponse.data.body.id;
+          //const loginedMemberName = axiosResponse.data.body.name;
+          //const loginedMemberNickname = axiosResponse.data.body.nickname;
+          const loginedMember = axiosResponse.data.body.member;  //member클래스 자체를 가져오는것으로 변경
 
           localStorage.setItem("authKey", authKey);
-          localStorage.setItem("loginedMemberId", loginedMemberId + "");
-          localStorage.setItem("loginedMemberName", loginedMemberName);
-          localStorage.setItem("loginedMemberNickname", loginedMemberNickname);
-          
+          //로그인 프로토콜 변경으로 변경
+          //localStorage.setItem("loginedMemberId", loginedMemberId + "");
+          //localStorage.setItem("loginedMemberName", loginedMemberName);
+          //localStorage.setItem("loginedMemberNickname", loginedMemberNickname);
+          localStorage.setItem("loginedMemberId", loginedMember.id + "");
+          localStorage.setItem("loginedMemberName", loginedMember.name);
+          localStorage.setItem("loginedMemberNickname", loginedMember.nickname);
+          localStorage.setItem("loginedMemberProfileImgUrl", loginedMember.extra__thumbImg);
+
           props.globalShare.loginedMember = {
             authKey,
-            id:loginedMemberId,
-            name:loginedMemberName,
-            nickname:loginedMemberNickname,
+            //로그인 프로토콜 변경으로 변경
+            //id:loginedMemberId,
+            //name:loginedMemberName,
+            //nickname:loginedMemberNickname,
+            id:loginedMember.id,
+            name:loginedMember.name,
+            nickname:loginedMember.nickname,
+            profileImgUrl:loginedMember.extra__thumbImg
+
           };
 
           //alert(axiosResponse.data.msg);

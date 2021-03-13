@@ -22,3 +22,15 @@ export function toIntOrUnd(data:any) {
 export function toIntOrNull(data:any) {
   return toInt(data, null);
 } 
+
+// 문자형 "null"이면 null로 리턴
+export function toStringOrNull(data:any) {
+  if ( data == null ) {
+    return null;
+  }
+  if ( data == "null" ) {
+    return null;
+  }
+
+  return data;
+} 
